@@ -1,0 +1,2736 @@
+definition
+%%
+%% AdditiveExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module AdditiveExpressions
+
+imports
+
+  MultiplicativeExpressions
+
+exports
+
+  sorts
+    AdditiveExpression
+
+  context-free syntax
+
+    %% 6.5.6
+    MultiplicativeExpression                        -> AdditiveExpression
+
+    AdditiveExpression "+" MultiplicativeExpression -> AdditiveExpression
+        {cons("Add")}
+
+    AdditiveExpression "-" MultiplicativeExpression -> AdditiveExpression
+        {cons("Sub")}
+%%
+%% AndExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module AndExpressions
+
+imports
+
+  EqualityExpressions
+
+exports
+
+  sorts
+    AndExpression
+
+  context-free syntax
+
+    %% 6.5.10
+    EqualityExpression                   -> AndExpression
+
+    AndExpression "&" EqualityExpression -> AndExpression
+        {cons("And")}
+
+  context-free restrictions
+    "&" -/- [\&]
+%%
+%% AssignmentExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module AssignmentExpressions
+
+imports
+
+  ConditionalExpressions
+
+exports
+
+  sorts
+    AssignmentOperator
+
+exports
+
+  sorts
+    AssignmentExpression
+
+  context-free syntax
+
+    %% 6.5.16
+    ConditionalExpression                       -> AssignmentExpression
+
+    UnaryExpression AssignmentOperator AssignmentExpression
+                                                -> AssignmentExpression
+        {cons("Assignment")}
+
+
+    %% 6.5.16
+    "="   -> AssignmentOperator
+    "*="  -> AssignmentOperator
+    "/="  -> AssignmentOperator
+    "%="  -> AssignmentOperator
+    "+="  -> AssignmentOperator
+    "-="  -> AssignmentOperator
+    ">>=" -> AssignmentOperator
+    "<<=" -> AssignmentOperator
+    "&="  -> AssignmentOperator
+    "^="  -> AssignmentOperator
+    "|="  -> AssignmentOperator
+%%
+%% C.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module C
+
+imports
+
+  TranslationUnits
+
+exports
+
+  context-free start-symbols
+    TranslationUnit
+%%
+%% CastExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module CastExpressions
+
+imports
+
+  UnaryExpressions
+
+exports
+
+  sorts
+    CastExpression
+
+  context-free syntax
+
+    %% 6.5.4
+    UnaryExpression                                 -> CastExpression
+
+
+    "(" TypeName ")" CastExpression                 -> CastExpression
+        {cons("Cast")}
+%%
+%% CharacterLiterals.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module CharacterLiterals
+
+imports
+
+  Characters
+  EscapeSequences
+
+exports
+
+  sorts
+    CHARACTER-LITERAL
+    C-CHAR-SEQUENCE
+    C-CHAR
+
+exports
+
+  sorts
+    CharacterLiteral
+
+  lexical syntax
+
+    %% 2.13.2 [lex.ccon]
+    "'" C-CHAR-SEQUENCE "'"  -> CHARACTER-LITERAL
+    "L'" C-CHAR-SEQUENCE "'" -> CHARACTER-LITERAL
+
+    %% 2.13.2 [lex.ccon]
+    C-CHAR+ -> C-CHAR-SEQUENCE
+
+    %% 2.13.2 [lex.ccon]
+    C-SOURCE-CHARACTER       -> C-CHAR
+    ESCAPE-SEQUENCE          -> C-CHAR
+    UNIVERSAL-CHARACTER-NAME -> C-CHAR
+
+  context-free syntax
+
+    CHARACTER-LITERAL -> CharacterLiteral
+%%
+%% Characters.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2006, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Characters
+
+imports
+
+  Layout
+
+exports
+
+  sorts
+    DIGIT
+    NON-DIGIT
+    NONZERO-DIGIT
+    SOURCE-CHARACTER
+    S-SOURCE-CHARACTER
+    C-SOURCE-CHARACTER
+    OCTAL-DIGIT
+    LOW-OCTAL-DIGIT
+    HIGH-OCTAL-DIGIT
+    HEXADECIMAL-DIGIT
+
+  lexical syntax
+
+    %% 2.2 [lex.charset]
+    [a-zA-Z0-9\_\{\}\[\]\#\(\)\<\>\%\:\;\.\?\*\+\-\/\^\&\|\~\!\=\,\"\'\ \n\t\\]
+                                                       -> SOURCE-CHARACTER
+
+    [\0-\9]						-> S-SOURCE-CHARACTER
+    %% 10 \n
+    [\11-\12]						-> S-SOURCE-CHARACTER
+    %% 13 \r
+    [\14-\33]						-> S-SOURCE-CHARACTER
+    %% 34 "
+    [\35-\91]						-> S-SOURCE-CHARACTER
+    %% 92 \
+    [\93-\127]						-> S-SOURCE-CHARACTER
+    [\192-\223][\128-\191]				-> S-SOURCE-CHARACTER
+    [\224-\239][\128-\191][\128-\191]			-> S-SOURCE-CHARACTER
+    [\240-\255][\128-\191][\128-\191][\128-\191]	-> S-SOURCE-CHARACTER
+
+
+    [\0-\9]						-> C-SOURCE-CHARACTER
+    %% 10 \n
+    [\11-\12]						-> C-SOURCE-CHARACTER
+    %% 13 \r
+    [\14-\38]						-> C-SOURCE-CHARACTER
+    %% 39 '
+    [\40-\91]						-> C-SOURCE-CHARACTER
+    %% 92 \
+    [\93-\127]						-> C-SOURCE-CHARACTER
+    [\192-\223][\128-\191]				-> C-SOURCE-CHARACTER
+    [\224-\239][\128-\191][\128-\191]			-> C-SOURCE-CHARACTER
+    [\240-\255][\128-\191][\128-\191][\128-\191]	-> C-SOURCE-CHARACTER
+
+    %% 2.10 [lex.name]
+    [0-9] -> DIGIT
+
+    %% 2.10 [lex.name]
+    [a-zA-Z\_] -> NON-DIGIT
+
+    %% 2.13.1 [lex.icon]
+    [1-9] -> NONZERO-DIGIT
+
+    %% 2.13.1 [lex.icon]
+    [0-7]       -> OCTAL-DIGIT
+    [0-3]       -> LOW-OCTAL-DIGIT
+    [4-7]       -> HIGH-OCTAL-DIGIT
+    [0-9a-fA-F] -> HEXADECIMAL-DIGIT
+%%
+%% CompoundStatements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module CompoundStatements
+
+imports
+
+  Statements
+
+exports
+
+  sorts
+    BlockItemList
+    BlockItem
+
+exports
+
+  sorts
+    CompoundStatement
+
+  context-free syntax
+
+    %% 6.8.2
+    "{" bli:BlockItemList? "}"                 -> CompoundStatement
+        {cons("CompoundStatement")}
+
+    %% 6.8.2
+    BlockItem+                           -> BlockItemList
+
+    %% 6.8.2
+    Statement                            -> BlockItem
+
+    Declaration                          -> BlockItem
+%%
+%% ConditionalExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module ConditionalExpressions
+
+imports
+
+  AssignmentExpressions
+  Expressions
+  LogicalOrExpressions
+
+exports
+
+  sorts
+    ConditionalExpression
+
+  context-free syntax
+
+    %% 6.5.15
+    LogicalOrExpression                   -> ConditionalExpression
+
+    LogicalOrExpression "?" Expression ":" ConditionalExpression
+                                          -> ConditionalExpression
+        {cons("Conditional")}
+%%
+%% ConstantExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module ConstantExpressions
+
+imports
+
+  ConditionalExpressions
+
+exports
+
+  sorts
+    ConstantExpression
+
+  context-free syntax
+
+    %% 6.6
+    ConditionalExpression -> ConstantExpression
+%%
+%% Declarations.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Declarations
+
+imports
+
+  InitDeclarators
+  FunctionDefinitions
+  Specifiers
+
+exports
+
+  sorts
+    Declaration
+
+  context-free syntax
+
+    %% 6.7
+    DeclarationSpecifierSeq initd:InitDeclaratorList? ";" -> Declaration
+%%
+%% Declarators.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Declarators
+
+imports
+
+  ConstantExpressions
+  TypeQualifiers
+  ParameterDeclarations
+
+exports
+
+  sorts
+    DirectDeclarator
+    Pointer
+
+exports
+
+  sorts
+    Declarator
+    PointerSeq
+    IdentifierList
+
+  context-free syntax
+
+    %% 6.7.5
+    p:PointerSeq? DirectDeclarator                       -> Declarator
+
+    %% 6.7.5
+    Identifier                                          -> DirectDeclarator
+
+    "(" Declarator ")"                                  -> DirectDeclarator
+
+    DirectDeclarator "[" tql:TypeQualifierList? as:AssignmentExpression? "]"
+                                                        -> DirectDeclarator
+
+    DirectDeclarator "[" "static" tql:TypeQualifierList? AssignmentExpression "]"
+                                                       -> DirectDeclarator
+
+    DirectDeclarator "[" TypeQualifierList "static" AssignmentExpression "]"
+                                                       -> DirectDeclarator
+
+    DirectDeclarator "[" tql:TypeQualifierList? "*" "]"
+                                                       -> DirectDeclarator
+
+    DirectDeclarator "(" ParameterTypeList ")"         -> DirectDeclarator
+
+    DirectDeclarator "(" il:IdentifierList? ")"        -> DirectDeclarator
+
+
+    %% 6.7.5
+     Pointer+                                          -> PointerSeq
+
+     "*" tql:TypeQualifierList?                        -> Pointer
+
+    PointerSeq                                         -> PointerSeq?
+
+                                                       -> PointerSeq?
+
+    %% 6.7.5
+    { Identifier "," }+                                -> IdentifierList
+
+    IdentifierList                                     -> IdentifierList?
+
+                                                       -> IdentifierList?
+
+%%
+%% Designations.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Designations
+
+imports
+
+  ConstantExpressions
+  Identifiers
+
+exports
+
+  sorts
+
+    DesignatorList
+    Designator
+
+exports
+
+  sorts
+
+    Designation
+
+  context-free syntax
+
+    %% 6.7.8
+    DesignatorList "="                 -> Designation
+
+    %% 6.7.8
+    Designator+                        -> DesignatorList
+
+    %% 6.7.8
+    "[" ConstantExpression "]"         -> Designator
+    "." Identifier                     -> Designator
+%%
+%% EnumSpecifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module EnumSpecifiers
+
+imports
+
+  Identifiers
+  ConstantExpressions
+
+exports
+
+  sorts
+    EnumeratorList
+    EnumeratorDefinition
+
+exports
+
+  sorts
+    EnumSpecifier
+    EnumerationConstant
+
+  context-free syntax
+
+    %% 6.7.2.2
+    "enum" ident:Identifier? "{" EnumeratorList "}"             -> EnumSpecifier
+
+    "enum" ident:Identifier? "{" EnumeratorList "," "}"         -> EnumSpecifier
+
+    "enum" Identifier                                        -> EnumSpecifier
+
+    %% 6.7.2.2
+    enud:{ EnumeratorDefinition "," }+                       -> EnumeratorList
+
+    enud1:{ EnumeratorDefinition "," }+ "," enud2:{ EnumeratorDefinition "," }+
+                                            -> { EnumeratorDefinition "," }+
+        {left}
+    EnumeratorDefinition                    -> { EnumeratorDefinition "," }+
+
+    %% 6.7.2.2
+    EnumerationConstant                                -> EnumeratorDefinition
+
+    EnumerationConstant "=" ConstantExpression         -> EnumeratorDefinition
+
+   %% 6.4.4.3
+   Identifier                                          -> EnumerationConstant
+
+%%
+%% EqualityExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module EqualityExpressions
+
+imports
+
+  RelationalExpressions
+
+exports
+
+  sorts
+    EqualityExpression
+
+  context-free syntax
+
+    %% 6.5.9
+    RelationalExpression                         -> EqualityExpression
+
+    EqualityExpression "==" RelationalExpression -> EqualityExpression
+        {cons("Equal")}
+
+    EqualityExpression "!=" RelationalExpression -> EqualityExpression
+        {cons("Diff")}
+%%
+%% EscapeSequences.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module EscapeSequences
+
+imports
+
+  Characters
+
+exports
+
+  sorts
+    SIMPLE-ESCAPE-SEQUENCE
+    OCTAL-ESCAPE-SEQUENCE
+    OCTAL-ESCAPE-SEQUENCE1
+    OCTAL-ESCAPE-SEQUENCE2
+    OCTAL-ESCAPE-SEQUENCE3
+    OCTAL-ESCAPE-SEQUENCE4
+    HEXADECIMAL-ESCAPE-SEQUENCE
+    HEX-QUAD
+
+exports
+
+  sorts
+    ESCAPE-SEQUENCE
+    UNIVERSAL-CHARACTER-NAME
+
+  lexical syntax
+
+    %% 6.4.4.4
+    SIMPLE-ESCAPE-SEQUENCE      -> ESCAPE-SEQUENCE
+    OCTAL-ESCAPE-SEQUENCE       -> ESCAPE-SEQUENCE
+    HEXADECIMAL-ESCAPE-SEQUENCE -> ESCAPE-SEQUENCE
+    UNIVERSAL-CHARACTER-NAME    -> ESCAPE-SEQUENCE
+
+    %% 6.4.4.4
+    "\\'"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\\"" -> SIMPLE-ESCAPE-SEQUENCE
+    "\\?"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\\\" -> SIMPLE-ESCAPE-SEQUENCE
+    "\\a"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\b"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\f"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\n"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\r"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\t"  -> SIMPLE-ESCAPE-SEQUENCE
+    "\\v"  -> SIMPLE-ESCAPE-SEQUENCE
+
+    %% 6.4.4.4
+    "\\" OCTAL-DIGIT                         	 -> OCTAL-ESCAPE-SEQUENCE1
+    "\\" LOW-OCTAL-DIGIT OCTAL-DIGIT             -> OCTAL-ESCAPE-SEQUENCE2
+    "\\" HIGH-OCTAL-DIGIT OCTAL-DIGIT            -> OCTAL-ESCAPE-SEQUENCE3
+    "\\" LOW-OCTAL-DIGIT OCTAL-DIGIT OCTAL-DIGIT -> OCTAL-ESCAPE-SEQUENCE4
+
+    OCTAL-ESCAPE-SEQUENCE1 -> OCTAL-ESCAPE-SEQUENCE
+    OCTAL-ESCAPE-SEQUENCE2 -> OCTAL-ESCAPE-SEQUENCE
+    OCTAL-ESCAPE-SEQUENCE3 -> OCTAL-ESCAPE-SEQUENCE
+    OCTAL-ESCAPE-SEQUENCE4 -> OCTAL-ESCAPE-SEQUENCE
+
+  lexical restrictions
+
+    OCTAL-ESCAPE-SEQUENCE1 -/- [0-7]
+    OCTAL-ESCAPE-SEQUENCE2 -/- [0-7]
+
+  lexical syntax
+
+    %% 6.4.4.4
+    "\\x" HEXADECIMAL-DIGIT+ 	 -> HEXADECIMAL-ESCAPE-SEQUENCE
+
+  lexical restrictions
+
+    HEXADECIMAL-ESCAPE-SEQUENCE	 -/- [0-9a-fA-F]
+
+  lexical syntax
+
+    %% 6.4.3
+    HEXADECIMAL-DIGIT HEXADECIMAL-DIGIT HEXADECIMAL-DIGIT HEXADECIMAL-DIGIT
+                                 -> HEX-QUAD
+    "\\u" HEX-QUAD               -> UNIVERSAL-CHARACTER-NAME
+    "\\U" HEX-QUAD HEX-QUAD      -> UNIVERSAL-CHARACTER-NAME
+%%
+%% ExclusiveOrExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module ExclusiveOrExpressions
+
+imports
+
+  AndExpressions
+
+exports
+
+  sorts
+     ExclusiveOrExpression
+
+  context-free syntax
+
+    %% 6.5.11
+    AndExpression                           -> ExclusiveOrExpression
+
+    ExclusiveOrExpression "^" AndExpression -> ExclusiveOrExpression
+        {cons("Xor")}
+%%
+%% Expressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Expressions
+
+imports
+
+  AssignmentExpressions
+
+exports
+
+  sorts
+     Expression
+
+  context-free syntax
+
+    %% 6.5.17
+    ass:{ AssignmentExpression "," }+         -> Expression
+        {cons("Expression")}
+%%
+%% ExpressionStatements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module ExpressionStatements
+
+imports
+
+  Expressions
+
+exports
+
+  sorts
+     ExpressionStatement
+
+  context-free syntax
+
+    %% 6.8.3
+    expr:Expression? ";" -> ExpressionStatement
+        {cons("ExpressionStatement")}
+%%
+%% FloatingLiterals.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module FloatingLiterals
+
+imports
+
+  Characters
+
+exports
+
+  sorts
+     FRACTIONAL-CONSTANT
+     EXPONENT-PART
+     SIGN
+     FLOATING-SUFFIX
+     DECIMAL-FLOATING-CONSTANT
+     HEXADECIMAL-FLOATING-CONSTANT
+     HEXADECIMAL-FRACTIONAL-CONSTANT
+     BINARY-EXPONENT-PART
+
+exports
+
+  sorts
+     FloatingLiteral
+
+  lexical syntax
+
+    %% 6.4.4.2
+    FRACTIONAL-CONSTANT EXPONENT-PART? FLOATING-SUFFIX? -> DECIMAL-FLOATING-CONSTANT
+    DIGIT+ EXPONENT-PART FLOATING-SUFFIX?               -> DECIMAL-FLOATING-CONSTANT
+
+    %% 6.4.4.2
+    "0x" HEXADECIMAL-FRACTIONAL-CONSTANT
+	BINARY-EXPONENT-PART FLOATING-SUFFIX?		-> HEXADECIMAL-FLOATING-CONSTANT
+    "0x" HEXADECIMAL-DIGIT+
+	BINARY-EXPONENT-PART FLOATING-SUFFIX?		-> HEXADECIMAL-FLOATING-CONSTANT
+    "0X" HEXADECIMAL-FRACTIONAL-CONSTANT
+	BINARY-EXPONENT-PART FLOATING-SUFFIX?		-> HEXADECIMAL-FLOATING-CONSTANT
+    "0X" HEXADECIMAL-DIGIT+
+	BINARY-EXPONENT-PART FLOATING-SUFFIX?		-> HEXADECIMAL-FLOATING-CONSTANT
+
+    %% 6.4.4.2
+    DIGIT* "." DIGIT+ 					-> FRACTIONAL-CONSTANT
+    DIGIT+ "."        					-> FRACTIONAL-CONSTANT
+
+    %% 6.4.4.2
+    [eE] SIGN? DIGIT+ 					-> EXPONENT-PART
+
+    %% 6.4.4.2
+    [\+\-] 						-> SIGN
+
+    %% 6.4.4.2
+    HEXADECIMAL-DIGIT* "." HEXADECIMAL-DIGIT+		-> HEXADECIMAL-FRACTIONAL-CONSTANT
+    HEXADECIMAL-DIGIT+ "."				-> HEXADECIMAL-FRACTIONAL-CONSTANT
+
+    %% 6.4.4.2
+    "p" SIGN? DIGIT+ 					-> BINARY-EXPONENT-PART
+    "P" SIGN? DIGIT+ 					-> BINARY-EXPONENT-PART
+
+    %% 6.4.4.2
+    [flFL] 						-> FLOATING-SUFFIX
+
+  context-free syntax
+
+    DECIMAL-FLOATING-CONSTANT 				-> FloatingLiteral
+    HEXADECIMAL-FLOATING-CONSTANT 			-> FloatingLiteral
+%%
+%% FunctionDefinitions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module FunctionDefinitions
+
+imports
+
+   CompoundStatements
+   Declarators
+   Specifiers
+
+exports
+
+  sorts
+    DeclarationList
+
+exports
+
+  sorts
+    FunctionDefinition
+
+  context-free syntax
+
+    %% 6.9.1
+    DeclarationSpecifierSeq Declarator dl:DeclarationList? CompoundStatement
+                                               -> FunctionDefinition
+
+    %% 6.9.1
+    DeclarationList			       -> DeclarationList?
+
+					       -> DeclarationList?
+
+    Declaration+                               -> DeclarationList
+%%
+%% FunctionSpecifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module FunctionSpecifiers
+
+exports
+
+  sorts
+    FunctionSpecifier
+
+  context-free syntax
+
+    %% 6.7.4
+    "inline"   -> FunctionSpecifier
+%%
+%% Identifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Identifiers
+
+imports
+
+  Characters
+  Keywords
+  Layout
+
+exports
+
+  sorts
+    ID
+
+exports
+
+  sorts
+    Identifier
+
+  lexical syntax
+
+    %% 6.4.2.1
+    NON-DIGIT(NON-DIGIT|DIGIT)* -> ID
+
+  lexical restrictions
+    ID -/- [a-zA-Z0-9\_]
+
+  context-free syntax
+
+    %% 6.4.2.1
+    ID                         -> Identifier
+
+    Identifier                -> Identifier?
+
+                              -> Identifier?
+%%
+%% InclusiveOrExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module InclusiveOrExpressions
+
+imports
+
+  ExclusiveOrExpressions
+
+exports
+
+  sorts
+    InclusiveOrExpression
+
+  context-free syntax
+
+    %% 6.5.12
+    ExclusiveOrExpression                           -> InclusiveOrExpression
+
+    InclusiveOrExpression "|" ExclusiveOrExpression -> InclusiveOrExpression
+        {cons("Or")}
+%%
+%% InitDeclarators.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module InitDeclarators
+
+imports
+
+  Declarators
+
+exports
+
+  sorts
+    InitDeclarator
+    InitDeclaratorList
+
+  context-free syntax
+
+    %% 6.7
+        InitDeclaratorList                          -> InitDeclaratorList?
+
+    initd:{ InitDeclarator "," }+                   -> InitDeclaratorList
+
+    InitDeclarator                                  -> { InitDeclarator "," }+
+
+
+    %% 6.7
+    Declarator                         -> InitDeclarator
+
+    Declarator "=" Initializer        -> InitDeclarator
+
+%%
+%% Initializers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Initializers
+
+imports
+
+  AssignmentExpressions
+  Designations
+
+exports
+  sorts
+    InitializerSeq
+
+exports
+
+  sorts
+
+    Initializer
+    InitializerList
+
+  context-free syntax
+
+    %% 6.7.8
+    AssignmentExpression                          -> Initializer
+
+    "{" InitializerList     "}"                   -> Initializer
+
+    "{" InitializerList "," "}"                   -> Initializer
+
+    %% 6.7.8
+    Designation? Initializer                      -> InitializerSeq
+
+    { InitializerSeq "," }+                       -> InitializerList
+%%
+%% IntegerLiterals.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module IntegerLiterals
+
+imports
+
+  Characters
+
+exports
+
+  sorts
+    INTEGER-LITERAL
+    DECIMAL-LITERAL
+    OCTAL-LITERAL
+    HEXADECIMAL-LITERAL
+    INTEGER-SUFFIX
+    UNSIGNED-SUFFIX
+    LONG-SUFFIX
+    LONG-LONG-SUFFIX
+
+exports
+
+  sorts
+    IntegerLiteral
+
+  lexical syntax
+
+    %% 2.13.1 [lex.icon]
+    DECIMAL-LITERAL INTEGER-SUFFIX?     -> INTEGER-LITERAL
+    OCTAL-LITERAL INTEGER-SUFFIX?       -> INTEGER-LITERAL
+    HEXADECIMAL-LITERAL INTEGER-SUFFIX? -> INTEGER-LITERAL
+
+    %% 2.13.1 [lex.icon]
+    NONZERO-DIGIT DIGIT* -> DECIMAL-LITERAL
+
+    %% 2.13.1 [lex.icon]
+    "0" OCTAL-DIGIT* -> OCTAL-LITERAL
+
+    %% 2.13.1 [lex.icon]
+    "0x" HEXADECIMAL-DIGIT* -> HEXADECIMAL-LITERAL
+    "0X" HEXADECIMAL-DIGIT* -> HEXADECIMAL-LITERAL
+
+    %% 2.13.1 [lex.icon]
+    UNSIGNED-SUFFIX LONG-SUFFIX?         -> INTEGER-SUFFIX {prefer}
+    UNSIGNED-SUFFIX LONG-LONG-SUFFIX?    -> INTEGER-SUFFIX
+    LONG-SUFFIX UNSIGNED-SUFFIX?         -> INTEGER-SUFFIX
+    LONG-LONG-SUFFIX UNSIGNED-SUFFIX?    -> INTEGER-SUFFIX
+
+    %% 2.13.1 [lex.icon]
+    [uU]                  -> UNSIGNED-SUFFIX
+    [lL]                  -> LONG-SUFFIX
+    [l][l]                -> LONG-LONG-SUFFIX
+    [L][L]                -> LONG-LONG-SUFFIX
+
+  context-free syntax
+
+    INTEGER-LITERAL -> IntegerLiteral
+
+  lexical restrictions
+
+    INTEGER-LITERAL -/- [\.]
+%%
+%% IterationStatements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module IterationStatements
+
+imports
+
+  Statements
+  SelectionStatements
+  ExpressionStatements
+  Declarations
+
+exports
+
+  sorts
+    IterationStatement
+
+  context-free syntax
+
+    %% 6.8.5
+    "while" "(" Expression ")" Statement                -> IterationStatement
+        {cons("While")}
+
+    "do" Statement "while" "(" Expression ")" ";"       -> IterationStatement
+        {cons("Do")}
+
+    "for" "(" exp1:Expression? ";" exp2:Expression? ";" exp3:Expression? ")"
+      Statement                                         -> IterationStatement
+        {cons("For")}
+
+    "for" "(" Declaration exp1:Expression? ";" exp2:Expression? ")" Statement
+                                                        -> IterationStatement
+        {cons("For")}
+%%
+%% JumpStatements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module JumpStatements
+
+imports
+
+  Expressions
+  Identifiers
+
+exports
+
+  sorts
+    JumpStatement
+
+  context-free syntax
+
+    %% 6.8.6
+    "break" ";"                                -> JumpStatement
+        {cons("break")}
+
+    "continue" ";"                             -> JumpStatement
+        {cons("continue")}
+
+    "return" exp1:Expression? ";"              -> JumpStatement
+        {cons("return")}
+
+    "goto" Identifier ";"                      -> JumpStatement
+        {cons("goto")}
+%%
+%% Keywords.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Keywords
+
+imports
+
+  Layout
+  Identifiers
+
+exports
+
+  context-free syntax
+
+    %% 6.4.1
+    "auto"             -> Identifier { reject }
+    "break"            -> Identifier { reject }
+    "case"             -> Identifier { reject }
+    "char"             -> Identifier { reject }
+    "const"            -> Identifier { reject }
+    "continue"         -> Identifier { reject }
+    "default"          -> Identifier { reject }
+    "do"               -> Identifier { reject }
+    "double"           -> Identifier { reject }
+    "else"             -> Identifier { reject }
+    "enum"             -> Identifier { reject }
+    "extern"           -> Identifier { reject }
+    "float"            -> Identifier { reject }
+    "for"              -> Identifier { reject }
+    "goto"             -> Identifier { reject }
+    "if"               -> Identifier { reject }
+    "inline"           -> Identifier { reject }
+    "int"              -> Identifier { reject }
+    "long"             -> Identifier { reject }
+    "register"         -> Identifier { reject }
+    "restrict"         -> Identifier { reject }
+    "return"           -> Identifier { reject }
+    "short"            -> Identifier { reject }
+    "signed"           -> Identifier { reject }
+    "sizeof"           -> Identifier { reject }
+    "static"           -> Identifier { reject }
+    "struct"           -> Identifier { reject }
+    "switch"           -> Identifier { reject }
+    "typedef"          -> Identifier { reject }
+    "union"            -> Identifier { reject }
+    "unsigned"         -> Identifier { reject }
+    "void"             -> Identifier { reject }
+    "volatile"         -> Identifier { reject }
+    "while"            -> Identifier { reject }
+    "_Bool"            -> Identifier { reject }
+    "_Complex"         -> Identifier { reject }
+    "_Imaginary"       -> Identifier { reject }
+
+  lexical restrictions
+    "auto"                -/- [a-zA-Z0-9\_]
+    "break"               -/- [a-zA-Z0-9\_]
+    "case"                -/- [a-zA-Z0-9\_]
+    "char"                -/- [a-zA-Z0-9\_]
+    "const"               -/- [a-zA-Z0-9\_]
+    "continue"            -/- [a-zA-Z0-9\_]
+    "default"             -/- [a-zA-Z0-9\_]
+    "do"                  -/- [a-zA-Z0-9\_]
+    "double"              -/- [a-zA-Z0-9\_]
+    "else"                -/- [a-zA-Z0-9\_]
+    "enum"                -/- [a-zA-Z0-9\_]
+    "extern"              -/- [a-zA-Z0-9\_]
+    "float"               -/- [a-zA-Z0-9\_]
+    "for"                 -/- [a-zA-Z0-9\_]
+    "goto"                -/- [a-zA-Z0-9\_]
+    "if"                  -/- [a-zA-Z0-9\_]
+    "inline"              -/- [a-zA-Z0-9\_]
+    "int"                 -/- [a-zA-Z0-9\_]
+    "long"                -/- [a-zA-Z0-9\_]
+    "register"            -/- [a-zA-Z0-9\_]
+    "restrict"            -/- [a-zA-Z0-9\_]
+    "return"              -/- [a-zA-Z0-9\_]
+    "short"               -/- [a-zA-Z0-9\_]
+    "signed"              -/- [a-zA-Z0-9\_]
+    "sizeof"              -/- [a-zA-Z0-9\_]
+    "static"              -/- [a-zA-Z0-9\_]
+    "struct"              -/- [a-zA-Z0-9\_]
+    "switch"              -/- [a-zA-Z0-9\_]
+    "typedef"             -/- [a-zA-Z0-9\_]
+    "union"               -/- [a-zA-Z0-9\_]
+    "unsigned"            -/- [a-zA-Z0-9\_]
+    "void"                -/- [a-zA-Z0-9\_]
+    "volatile"            -/- [a-zA-Z0-9\_]
+    "while"               -/- [a-zA-Z0-9\_]
+    "_Bool"               -/- [a-zA-Z0-9\_]
+    "_Complex"            -/- [a-zA-Z0-9\_]
+    "_Imaginary"          -/- [a-zA-Z0-9\_]
+%%
+%% LabeledStatements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module LabeledStatements
+
+imports
+
+  Identifiers
+  Statements
+  ConstantExpressions
+
+exports
+
+  sorts
+    LabeledStatement
+
+  context-free syntax
+
+    %% 6.8.1
+    Identifier ":" Statement                -> LabeledStatement
+        {cons("Label")}
+
+    "case" ConstantExpression ":" Statement -> LabeledStatement
+        {cons("Case")}
+
+    "default" ":" Statement                 -> LabeledStatement
+        {cons("Default")}
+%%
+%% Layout.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Layout
+
+exports
+
+   sorts
+    ASTERISK
+
+exports
+
+  lexical syntax
+
+    [\*] -> ASTERISK
+
+    [\ \t\r\n\11\12]              -> LAYOUT
+    "%%//" ~[\n\r]* [\n\r]        -> LAYOUT
+    "/*" (~[\*]|ASTERISK)* "*/" -> LAYOUT
+
+  lexical restrictions
+
+    ASTERISK -/- [\/]
+
+  context-free restrictions
+
+    LAYOUT? -/- [\ \t\r\n\11\12] | [\/].[\/\*]
+%%
+%% Literals.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Literals
+
+imports
+
+  CharacterLiterals
+  EnumSpecifiers
+  FloatingLiterals
+  IntegerLiterals
+  Layout
+  StringLiterals
+
+exports
+
+  sorts
+    Literal
+
+  context-free syntax
+
+    %% 6.4.4
+    IntegerLiteral           -> Literal
+
+    CharacterLiteral         -> Literal
+
+    FloatingLiteral          -> Literal
+
+    EnumerationConstant      -> Literal
+
+%%
+%% LogicalAndExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module LogicalAndExpressions
+
+imports
+
+  InclusiveOrExpressions
+
+exports
+
+  sorts
+    LogicalAndExpression
+
+  context-free syntax
+
+    %% 6.5.13
+    InclusiveOrExpression                           -> LogicalAndExpression
+
+    LogicalAndExpression "&&" InclusiveOrExpression -> LogicalAndExpression
+        {cons("LogicalAnd")}
+%%
+%% LogicalOrExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module LogicalOrExpressions
+
+imports
+
+  LogicalAndExpressions
+
+exports
+
+  sorts
+    LogicalOrExpression
+
+  context-free syntax
+
+    %% 6.5.14
+    LogicalAndExpression                          -> LogicalOrExpression
+
+    LogicalOrExpression "||" LogicalAndExpression -> LogicalOrExpression
+        {cons("LogicalOr")}
+%%
+%% MultiplicativeExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module MultiplicativeExpressions
+
+imports
+
+  CastExpressions
+
+exports
+
+  sorts
+    MultiplicativeExpression
+
+  context-free syntax
+
+    %% 6.5.5
+    CastExpression                              -> MultiplicativeExpression
+
+    MultiplicativeExpression "*" CastExpression -> MultiplicativeExpression
+        {cons("Mul") }
+
+    MultiplicativeExpression "/" CastExpression -> MultiplicativeExpression
+        {cons("Div")}
+
+    MultiplicativeExpression "%" CastExpression -> MultiplicativeExpression
+        {cons("Mod")}
+%%
+%% ParameterDeclarations.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module ParameterDeclarations
+
+imports
+
+  AssignmentExpressions
+  Declarators
+  Specifiers
+  TypeIds
+
+exports
+  sorts
+    ParameterList
+    ParameterDeclaration
+
+exports
+
+  sorts
+
+    ParameterTypeList
+
+  context-free syntax
+
+    %% 6.7.5
+    ParameterList                              -> ParameterTypeList
+
+    ParameterList "," "..."                    -> ParameterTypeList
+
+    %% 6.7.5
+    pd:{ ParameterDeclaration "," }+           -> ParameterList
+
+    %% 6.7.5
+    DeclarationSpecifierSeq Declarator         -> ParameterDeclaration
+
+    DeclarationSpecifierSeq ad:AbstractDeclarator?
+                                               -> ParameterDeclaration
+
+%%
+%% PostfixExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module PostfixExpressions
+
+imports
+
+  AssignmentExpressions
+  Expressions
+  Initializers
+  PrimaryExpressions
+  TypeIds
+
+exports
+
+  sorts
+    PostfixExpression
+
+  context-free syntax
+
+    %% 6.5.2
+    PrimaryExpression                                     -> PostfixExpression
+
+    PostfixExpression "[" Expression "]"                  -> PostfixExpression
+        {cons("ArraySubScript")}
+
+    PostfixExpression "(" expr:Expression? ")"            -> PostfixExpression
+        {cons("Call")}
+
+    PostfixExpression "." Identifier                      -> PostfixExpression
+
+    PostfixExpression "->" Identifier                     -> PostfixExpression
+
+    PostfixExpression "++"                                -> PostfixExpression
+        {cons("PostIncr")}
+
+    PostfixExpression "--"                                -> PostfixExpression
+        {cons("PostDecr")}
+
+    "(" TypeName ")" "{" InitializerList "}"              -> PostfixExpression
+
+    "(" TypeName ")" "{" InitializerList "," "}"          -> PostfixExpression
+
+    %% 6.5.2 (ArgumentExpressionList replaced by Expression)
+%%
+%% PrimaryExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module PrimaryExpressions
+
+imports
+
+  Expressions
+  Literals
+
+exports
+
+  sorts
+    PrimaryExpression
+
+  context-free syntax
+
+    %% 6.5.1
+    Identifier         -> PrimaryExpression
+
+    Literal            -> PrimaryExpression
+
+    StringLiteral+     -> PrimaryExpression
+
+    "(" Expression ")" -> PrimaryExpression
+        {cons("ParenExp")}
+%%
+%% RelationalExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module RelationalExpressions
+
+imports
+
+  ShiftExpressions
+
+exports
+
+  sorts
+    RelationalExpression
+
+  context-free syntax
+
+    %% 6.5.8
+    ShiftExpression                           -> RelationalExpression
+
+    RelationalExpression "<" ShiftExpression  -> RelationalExpression
+        {cons("LessThan")}
+
+    RelationalExpression ">" ShiftExpression  -> RelationalExpression
+        {cons("GreaterThan")}
+
+    RelationalExpression "<=" ShiftExpression -> RelationalExpression
+        {cons("LessEqual")}
+
+    RelationalExpression ">=" ShiftExpression -> RelationalExpression
+        {cons("GreaterEqual")}
+%%
+%% SelectionStatements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module SelectionStatements
+
+imports
+
+  AssignmentExpressions
+  Expressions
+  Statements
+
+exports
+
+  sorts
+    SelectionStatement
+
+  context-free syntax
+
+    %% 6.8.4
+    "if" "(" Expression ")" Statement                  -> SelectionStatement
+        {prefer,
+         cons("If")}
+
+    "if" "(" Expression ")" st1:Statement "else" st2:Statement
+                                                       -> SelectionStatement
+        {cons("If-Else")}
+
+
+    "switch" "(" Expression ")" Statement              -> SelectionStatement
+        {cons("Switch")}
+%%
+%% ShiftExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module ShiftExpressions
+
+imports
+
+  AdditiveExpressions
+
+exports
+
+  sorts
+    ShiftExpression
+
+  context-free syntax
+
+   %% 6.5.7
+   AdditiveExpression                      -> ShiftExpression
+
+   ShiftExpression "<<" AdditiveExpression -> ShiftExpression
+        {cons("LeftShift")}
+
+   ShiftExpression ">>" AdditiveExpression -> ShiftExpression
+        {cons("RightShift")}
+%%
+%% SpecifierQualifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module SpecifierQualifiers
+
+imports
+
+  TypeQualifiers
+  TypeSpecifiers
+
+exports
+  sorts
+    SpecifierQualifier
+
+exports
+
+  sorts
+    SpecifierQualifierList
+
+  context-free syntax
+
+    %%
+    %% FIXME: Factor with Specifiers.esdf
+    %%
+
+    %% 6.7.2.1
+    TypeSpecifier                                         -> SpecifierQualifier
+
+    TypeQualifier                                         -> SpecifierQualifier
+
+    %%// FIXME:
+                                                      -> SpecifierQualifier*
+
+
+    sq:SpecifierQualifier+                             -> SpecifierQualifier*
+
+    sq1:SpecifierQualifier* sq2:SpecifierQualifier+     -> SpecifierQualifier+
+
+    sq1:SpecifierQualifier+ sq2:SpecifierQualifier*     -> SpecifierQualifier+
+
+    sq1:SpecifierQualifier* sq2:SpecifierQualifier*     -> SpecifierQualifier*
+       {left}
+    %%// EOF
+
+    sq1:SpecifierQualifier+ sq2:SpecifierQualifier+     -> SpecifierQualifier+
+       {left}
+
+    SpecifierQualifier                                  -> SpecifierQualifier+
+
+    sq:SpecifierQualifier+                           -> SpecifierQualifierList
+
+%%
+%% Specifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Specifiers
+
+imports
+
+  FunctionSpecifiers
+  StorageClassSpecifiers
+  TypeSpecifiers
+  TypeQualifiers
+
+exports
+
+  sorts
+    DeclarationSpecifier
+    DeclarationSpecifierSeq
+
+  context-free syntax
+
+    %% 6.7
+    StorageClassSpecifier -> DeclarationSpecifier
+
+    TypeSpecifier         -> DeclarationSpecifier
+
+    TypeQualifier         -> DeclarationSpecifier
+
+    FunctionSpecifier     -> DeclarationSpecifier
+
+
+    %%// FIXME
+                                                     -> DeclarationSpecifier*
+
+    decls:DeclarationSpecifier+
+                                                     -> DeclarationSpecifier*
+
+    decls1:DeclarationSpecifier* decls2:DeclarationSpecifier+
+                                                     -> DeclarationSpecifier+
+
+    decls1:DeclarationSpecifier+ decls2:DeclarationSpecifier*
+                                                     -> DeclarationSpecifier+
+
+    decls1:DeclarationSpecifier* decls2:DeclarationSpecifier*
+                                                     -> DeclarationSpecifier*
+       {left}
+    %%// EOF
+
+
+    %% 6.7
+    decls1:DeclarationSpecifier+ decls2:DeclarationSpecifier+
+                                                     -> DeclarationSpecifier+
+       {left}
+
+    DeclarationSpecifier -> DeclarationSpecifier+
+
+    decls:DeclarationSpecifier+ -> DeclarationSpecifierSeq
+%%
+%% Statements.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module Statements
+
+imports
+
+  CompoundStatements
+  ExpressionStatements
+  IterationStatements
+  JumpStatements
+  LabeledStatements
+  SelectionStatements
+
+exports
+
+  sorts
+    Statement
+
+  context-free syntax
+
+    %% 6.8
+    LabeledStatement     -> Statement
+
+    CompoundStatement    -> Statement
+
+    ExpressionStatement  -> Statement
+    SelectionStatement   -> Statement
+    IterationStatement   -> Statement
+    JumpStatement        -> Statement
+%%
+%% StorageClassSpecifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module StorageClassSpecifiers
+
+imports
+
+exports
+
+  sorts
+    StorageClassSpecifier
+
+  context-free syntax
+
+    %% 6.7.1
+    "typedef"  -> StorageClassSpecifier
+    "auto"     -> StorageClassSpecifier
+    "register" -> StorageClassSpecifier
+    "static"   -> StorageClassSpecifier
+    "extern"   -> StorageClassSpecifier
+%%
+%% StringLiterals.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module StringLiterals
+
+imports
+
+  Characters
+  EscapeSequences
+
+exports
+
+  sorts
+    STRING-LITERAL
+    S-CHAR
+    S-CHAR-SEQUENCE
+
+exports
+
+  sorts
+    StringLiteral
+
+  lexical syntax
+
+    %% 2.13.4 [lex.string]
+    "\"" S-CHAR-SEQUENCE? "\""  -> STRING-LITERAL
+    "L\"" S-CHAR-SEQUENCE? "\"" -> STRING-LITERAL
+
+    %% 2.13.4 [lex.string]
+    S-CHAR+ -> S-CHAR-SEQUENCE
+
+    %% 2.13.4 [lex.string]
+    S-SOURCE-CHARACTER       -> S-CHAR
+    ESCAPE-SEQUENCE          -> S-CHAR
+    UNIVERSAL-CHARACTER-NAME -> S-CHAR
+
+  context-free syntax
+
+    STRING-LITERAL -> StringLiteral
+%%
+%% StructOrUnionSpecifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module StructOrUnionSpecifiers
+
+imports
+
+  AssignmentExpressions
+  ConstantExpressions
+  Declarators
+  Identifiers
+  SpecifierQualifiers
+
+exports
+
+  sorts
+    StructDeclaration
+    StructDeclarator
+    StructDeclaratorList
+    StructDeclarationList
+    StructOrUnion
+
+exports
+
+  sorts
+    StructOrUnionSpecifier
+
+  context-free syntax
+
+    %% 6.7.2.1
+    StructOrUnion ident:Identifier? "{" StructDeclarationList "}"
+                                                    -> StructOrUnionSpecifier
+
+    StructOrUnion Identifier                        -> StructOrUnionSpecifier
+
+    %% 6.7.2.1
+    "struct"                                        -> StructOrUnion
+        {cons("struct")}
+
+    "union"                                         -> StructOrUnion
+        {cons("union")}
+
+
+    %% 6.7.2.1
+    st:StructDeclaration+                           -> StructDeclarationList
+
+    %% 6.7.2.1
+    SpecifierQualifierList StructDeclaratorList ";" -> StructDeclaration
+
+    %% 6.7.2.1
+    st:{ StructDeclarator "," }+                    -> StructDeclaratorList
+
+    %% 6.7.2.1
+    Declarator                                      -> StructDeclarator
+
+    dl:Declarator? ":" ConstantExpression           -> StructDeclarator
+
+    Declarator					    -> Declarator?
+%%
+%% TranslationUnits.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006, 2007, 2008 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module TranslationUnits
+
+imports
+
+  Declarations
+
+exports
+  sorts
+    ExternalDeclarationSeq
+
+exports
+
+  sorts
+
+    TranslationUnit
+    ExternalDeclaration
+
+  context-free syntax
+
+    %% 6.9
+    ExternalDeclarationSeq?         -> TranslationUnit
+
+    %% 6.9 (added)
+    ed:ExternalDeclaration+         -> ExternalDeclarationSeq
+
+    %% 6.9
+    FunctionDefinition                 -> ExternalDeclaration
+
+    Declaration                        -> ExternalDeclaration
+%%
+%% TypeIds.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module TypeIds
+
+imports
+
+  AssignmentExpressions
+  ParameterDeclarations
+  TypeQualifiers
+  TypeSpecifiers
+
+exports
+
+  sorts
+    TypeName
+    AbstractDeclarator
+    DirectAbstractDeclarator
+
+  context-free syntax
+
+    %% 6.7.6
+    SpecifierQualifierList ab:AbstractDeclarator?   -> TypeName
+
+    %% 6.7.6
+    PointerSeq                                      -> AbstractDeclarator
+    pt:PointerSeq? DirectAbstractDeclarator         -> AbstractDeclarator
+
+    %% 6.7.6
+    "(" AbstractDeclarator ")"                      -> DirectAbstractDeclarator
+
+    dad:DirectAbstractDeclarator? "[" ae:AssignmentExpression? "]"
+                                                    -> DirectAbstractDeclarator
+
+    dad:DirectAbstractDeclarator? "[" "*" "]"       -> DirectAbstractDeclarator
+
+    dad:DirectAbstractDeclarator? "(" ptl:ParameterTypeList? ")"
+                                                    -> DirectAbstractDeclarator
+
+  lexical restrictions
+    "+" -/- [\+]
+    "-" -/- [\-]
+%%
+%% TypeQualifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module TypeQualifiers
+
+exports
+
+  sorts
+    TypeQualifier
+    TypeQualifierList
+
+  context-free syntax
+
+    %% 6.7.3
+    "const"            -> TypeQualifier {cons("const")}
+    "restrict"         -> TypeQualifier {cons("restrict")}
+    "volatile"         -> TypeQualifier {cons("volatile")}
+
+    %% 6.7.5
+    TypeQualifier+     -> TypeQualifierList
+%%
+%% TypeSpecifiers.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module TypeSpecifiers
+
+imports
+
+  EnumSpecifiers
+  Identifiers
+  StructOrUnionSpecifiers
+  TypeQualifiers
+
+exports
+  sorts
+    TypedefName
+
+exports
+
+  sorts
+    TypeSpecifier
+
+  context-free syntax
+
+    %% 6.7.2
+    "void"                  -> TypeSpecifier
+
+    "char"                  -> TypeSpecifier
+
+    "short"                 -> TypeSpecifier
+
+    "int"                   -> TypeSpecifier
+
+    "long"                  -> TypeSpecifier
+
+    "float"                 -> TypeSpecifier
+
+    "double"                -> TypeSpecifier
+
+    "signed"                -> TypeSpecifier
+
+    "unsigned"              -> TypeSpecifier
+
+    "_Bool"                 -> TypeSpecifier
+
+    "_Complex"              -> TypeSpecifier
+
+    "_Imaginary"            -> TypeSpecifier
+
+
+    StructOrUnionSpecifier  -> TypeSpecifier
+
+    EnumSpecifier           -> TypeSpecifier
+
+    TypedefName             -> TypeSpecifier
+
+    %% 6.7.7
+    Identifier                    -> TypedefName
+%%
+%% UnaryExpressions.esdf:
+%% this file is a part of C-Grammar from the Transformers project.
+%% Copyright (C) 2004, 2005, 2006 EPITA Research and Development Laboratory.
+%%
+%% Transformers is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License as published by
+%% the Free Software Foundation; either version 2 of the License, or
+%% (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+%%
+module UnaryExpressions
+
+imports
+
+  CastExpressions
+  PostfixExpressions
+  TypeIds
+
+exports
+
+  sorts
+    UnaryOperator
+
+exports
+
+  sorts
+    UnaryExpression
+
+  context-free syntax
+
+    %% 6.5.3
+    PostfixExpression            -> UnaryExpression
+
+
+    "++" UnaryExpression         -> UnaryExpression
+        {cons("PreIncr")}
+
+    "--" UnaryExpression         -> UnaryExpression
+        {cons("PreDecr")}
+
+    UnaryOperator CastExpression -> UnaryExpression
+
+    "sizeof" UnaryExpression     -> UnaryExpression
+
+    "sizeof" "(" TypeName ")"    -> UnaryExpression
+
+    %% 6.5.3
+    "*" -> UnaryOperator        {cons("Indirection")}
+    "&" -> UnaryOperator        {cons("Address")}
+    "+" -> UnaryOperator        {cons("Pos")}
+    "-" -> UnaryOperator        {cons("Neg")}
+    "!" -> UnaryOperator        {cons("LogicalNot")}
+    "~" -> UnaryOperator        {cons("BinaryNot")}
