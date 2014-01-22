@@ -22,13 +22,14 @@ import org.strategoxt.imp.runtime.dynamicloading.Descriptor;
 import org.strategoxt.imp.runtime.dynamicloading.DescriptorFactory;
 import org.strategoxt.imp.runtime.parser.JSGLRI;
 import org.strategoxt.imp.runtime.parser.SGLRParseController;
-import org.sugarj.LanguageLibRegistry;
+import org.sugarj.BaseLanguageRegistry;
 import org.sugarj.common.Environment;
 import org.sugarj.common.FileCommands;
 import org.sugarj.common.StringCommands;
 import org.sugarj.common.path.AbsolutePath;
 import org.sugarj.common.path.Path;
 import org.sugarj.common.path.RelativePath;
+import org.sugarj.stdlib.StdLib;
 
 public class SugarJParseController extends SugarJParseControllerGenerated {
   
@@ -156,7 +157,7 @@ public class SugarJParseController extends SugarJParseControllerGenerated {
   }
   
   private static Environment makeProjectEnvironment(IJavaProject project) throws JavaModelException {
-    Environment env = new Environment(false);
+    Environment env = new Environment(false, StdLib.stdLibDir);
     
     IPath fullPath = project.getProject().getFullPath();
     Path root = new AbsolutePath(project.getProject().getLocation().makeAbsolute().toString());
@@ -178,9 +179,9 @@ public class SugarJParseController extends SugarJParseControllerGenerated {
         includePath = new RelativePath(root, p);
       
       if (fragment.getKind() == IPackageFragmentRoot.K_SOURCE && fragment.getParent().equals(project))
-        env.getSourcePath().add(includePath);
+        env.addToSourcePath(includePath);
       else if (fragment.getKind() == IPackageFragmentRoot.K_BINARY)
-        env.getIncludePath().add(includePath);
+        env.addToIncludePath(includePath);
     }
     
     for (String reqProject : project.getRequiredProjectNames()) {
@@ -188,7 +189,7 @@ public class SugarJParseController extends SugarJParseControllerGenerated {
       if (reqJavaProject != null) {
         Environment projEnv = makeProjectEnvironment(reqJavaProject);
 //        env.getSourcePath().addAll(projEnv.getSourcePath());
-        env.getIncludePath().add(projEnv.getParseBin());
+        env.addToIncludePath(projEnv.getParseBin());
       }
     }
   
@@ -203,7 +204,7 @@ public class SugarJParseController extends SugarJParseControllerGenerated {
 
     environment.setAtomicImportParsing(true);
     environment.setNoChecking(true);
-    environment.getIncludePath().add(new AbsolutePath(new StrategoJarAntPropertyProvider().getAntPropertyValue("")));
+    environment.addToIncludePath(new AbsolutePath(new StrategoJarAntPropertyProvider().getAntPropertyValue("")));
   }
   
   private static InputStream imposeRegisteredExtensions(InputStream descriptorStream) {
@@ -213,7 +214,7 @@ public class SugarJParseController extends SugarJParseControllerGenerated {
     } catch (IOException e) {
       return descriptorStream;
     }
-    List<String> exts = LanguageLibRegistry.getInstance().getRegisteredFileExtensions();
+    List<String> exts = BaseLanguageRegistry.getInstance().getRegisteredFileExtensions();
     for (int i = 0; i < exts.size(); i++)
       exts.set(i, "\"" + exts.get(i) + "\"");
     String extsString = StringCommands.printListSeparated(exts, ",");

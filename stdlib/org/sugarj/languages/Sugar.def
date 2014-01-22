@@ -2,10 +2,12 @@ definition
 module org/sugarj/languages/Sugar
 imports org/sugarj/languages/Sdf2
         org/sugarj/languages/Stratego
+        org/sugarj/languages/EditorServices
 exports
   context-free syntax
-    Grammar -> SugarDefElem {cons("grammar-elem")}
-    Transformation -> SugarDefElem {cons("transformation-elem")}
+    Grammar -> ExtensionElem {cons("grammar-elem")}
+    Transformation -> ExtensionElem {cons("transformation-elem")}
+    EditorServiceSection -> ExtensionElem {cons("editor-elem")}
 
   context-free syntax
     "sorts" Sdf2Symbols -> Grammar {cons("sorts")}
@@ -39,13 +41,18 @@ exports
 
   lexical syntax
     "desugarings" -> StrategoKeyword
+    "analyses" -> StrategoKeyword
 
   context-free syntax
     "desugarings" Desugaring* -> Transformation {cons("Desugarings")}
+    "analyses" Analysis* -> Transformation {cons("Analyses")}
 
   context-free syntax
     StrategoStrategy -> Desugaring {cons("PureDesugaring")}
     StrategoStrategy ":" Sdf2Symbol "->" Sdf2Symbol Sdf2Attributes -> Desugaring {cons("InjectDesugaring")}
+    StrategoStrategy -> Analysis {longest-match}
 
   lexical restrictions
     "desugarings" -/- [a-zA-Z0-9\'\-\_]
+    "analyses" -/- [a-zA-Z0-9\'\-\_]
+    

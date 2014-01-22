@@ -319,6 +319,10 @@ public class FileCommands {
     return f1.getFile().lastModified() > f2.getFile().lastModified();
   }
 
+  public static boolean fileExists(Path file) {
+    return file != null && file.getFile().exists() && file.getFile().isFile();
+  }
+
   public static boolean exists(Path file) {
     return file != null && file.getFile().exists();
   }
@@ -361,6 +365,10 @@ public class FileCommands {
     return file;
   }
 
+  public static RelativePath dropFilename(RelativePath file) {
+    return new RelativePath(file.getBasePath(), dropFilename(file.getRelativePath()));
+  }
+  
   public static String dropFilename(String file) {
 	  int i = file.lastIndexOf(Environment.sep);
 	  if (i > 0) 
@@ -410,16 +418,12 @@ public class FileCommands {
     return null;
   }
   
-  public static Path tryMoveFile(Path from, Path to, Path file) throws IOException {
+  public static Path tryCopyFile(Path from, Path to, Path file) throws IOException {
     RelativePath p = getRelativePath(from, file);
     Path target = file;
     if (p != null) {
       target = new RelativePath(to, p.getRelativePath());
-      boolean ok = p.getFile().renameTo(target.getFile());
-      if (!ok) {
-        copyFile(p, target);
-        delete(p);
-      }
+      copyFile(p, target);
     }
     return target;
   }
