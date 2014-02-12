@@ -1,0 +1,11 @@
+definition
+module org/sugarj/languages/SugarC
+imports org/sugarj/languages/C
+        org/sugarj/languages/Sugar
+
+%% exports
+%%  context-free syntax
+%%    CModuleDec                  -> ToplevelDeclaration
+%%    COffsideImportdecl          -> ToplevelDeclaration
+%%    COffsideTopdeclList         -> ToplevelDeclaration {cons("CBody")}
+%%    ExtensionElem+                    -> ToplevelDeclaration {cons("ExtensionBody")}

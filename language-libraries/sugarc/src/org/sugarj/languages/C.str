@@ -1,96 +1,203 @@
 module C
 
-imports
-	
-	libstratego-lib
-	libstratego-gpp
-	libstratego-aterm
-	include/C
-	editor/C-Outliner
-	lib/editor-common.generated
-	lib/runtime/index/-
-	lib/runtime/nabl/-
-	lib/runtime/properties/-
-	lib/runtime/types/-
-	lib/runtime/task/-
-	lib/runtime/analysis/-
-	names
-	check
-	generate
-	pp
+signature
+  constructors
+                             : Declaration -> ExternalDeclaration
+                             : FunctionDefinition -> ExternalDeclaration
+    ExternalDeclarationSeq   : List(ExternalDeclaration) -> ExternalDeclarationSeq
+    TranslationUnit          : Option(ExternalDeclarationSeq) -> TranslationUnit
+    Declaration              : DeclarationSpecifierSeq * Option(InitDeclaratorList) -> Declaration
+    DeclarationList          : List(Declaration) -> DeclarationList
+    FunctionDefinition       : DeclarationSpecifierSeq * Declarator * Option(DeclarationList) * CompoundStatement -> FunctionDefinition
+    BlockItem                : Declaration -> BlockItem
+    BlockItem                : Statement -> BlockItem
+    BlockItemList            : List(BlockItem) -> BlockItemList
+    CompoundStatement        : Option(BlockItemList) -> CompoundStatement
+                             : JumpStatement -> Statement
+                             : IterationStatement -> Statement
+                             : SelectionStatement -> Statement
+                             : ExpressionStatement -> Statement
+                             : CompoundStatement -> Statement
+                             : LabeledStatement -> Statement
+    Default                  : Statement -> LabeledStatement
+    Case                     : ConstantExpression * Statement -> LabeledStatement
+    Label                    : Identifier * Statement -> LabeledStatement
+    goto                     : Identifier -> JumpStatement
+    return                   : Option(Expression) -> JumpStatement
+    continue                 : JumpStatement
+    break                    : JumpStatement
+    For                      : Declaration * Option(Expression) * Option(Expression) * Statement -> IterationStatement
+    For                      : Option(Expression) * Option(Expression) * Option(Expression) * Statement -> IterationStatement
+    Do                       : Statement * Expression -> IterationStatement
+    While                    : Expression * Statement -> IterationStatement
+    Switch                   : Expression * Statement -> SelectionStatement
+    If-Else                  : Expression * Statement * Statement -> SelectionStatement
+    If                       : Expression * Statement -> SelectionStatement
+    ExpressionStatement      : Option(Expression) -> ExpressionStatement
+    InitDeclarator           : Declarator * Initializer -> InitDeclarator
+    InitDeclarator           : Declarator -> InitDeclarator
+    InitDeclaratorList       : List(InitDeclarator) -> InitDeclaratorList
+    IdentifierList           : List(Identifier) -> IdentifierList
+    Pointer                  : Option(TypeQualifierList) -> Pointer
+    PointerSeq               : List(Pointer) -> PointerSeq
+    DirectDeclarator         : DirectDeclarator * Option(IdentifierList) -> DirectDeclarator
+    DirectDeclarator         : DirectDeclarator * ParameterTypeList -> DirectDeclarator
+    DirectDeclarator         : DirectDeclarator * Option(TypeQualifierList) -> DirectDeclarator
+    DirectDeclarator         : DirectDeclarator * TypeQualifierList * AssignmentExpression -> DirectDeclarator
+    DirectDeclarator         : DirectDeclarator * Option(TypeQualifierList) * AssignmentExpression -> DirectDeclarator
+    DirectDeclarator         : DirectDeclarator * Option(TypeQualifierList) * Option(AssignmentExpression) -> DirectDeclarator
+    DirectDeclarator         : Declarator -> DirectDeclarator
+    DirectDeclarator         : Identifier -> DirectDeclarator
+    Declarator               : Option(PointerSeq) * DirectDeclarator -> Declarator
+                             : ConditionalExpression -> ConstantExpression
+    Conditional              : LogicalOrExpression * Expression * ConditionalExpression -> ConditionalExpression
+                             : LogicalOrExpression -> ConditionalExpression
+    LogicalOr                : LogicalOrExpression * LogicalAndExpression -> LogicalOrExpression
+                             : LogicalAndExpression -> LogicalOrExpression
+    LogicalAnd               : LogicalAndExpression * InclusiveOrExpression -> LogicalAndExpression
+                             : InclusiveOrExpression -> LogicalAndExpression
+    Or                       : InclusiveOrExpression * ExclusiveOrExpression -> InclusiveOrExpression
+                             : ExclusiveOrExpression -> InclusiveOrExpression
+    Xor                      : ExclusiveOrExpression * AndExpression -> ExclusiveOrExpression
+                             : AndExpression -> ExclusiveOrExpression
+    And                      : AndExpression * EqualityExpression -> AndExpression
+                             : EqualityExpression -> AndExpression
+    Diff                     : EqualityExpression * RelationalExpression -> EqualityExpression
+    Equal                    : EqualityExpression * RelationalExpression -> EqualityExpression
+                             : RelationalExpression -> EqualityExpression
+    GreaterEqual             : RelationalExpression * ShiftExpression -> RelationalExpression
+    LessEqual                : RelationalExpression * ShiftExpression -> RelationalExpression
+    GreaterThan              : RelationalExpression * ShiftExpression -> RelationalExpression
+    LessThan                 : RelationalExpression * ShiftExpression -> RelationalExpression
+                             : ShiftExpression -> RelationalExpression
+    RightShift               : ShiftExpression * AdditiveExpression -> ShiftExpression
+    LeftShift                : ShiftExpression * AdditiveExpression -> ShiftExpression
+                             : AdditiveExpression -> ShiftExpression
+    Sub                      : AdditiveExpression * MultiplicativeExpression -> AdditiveExpression
+    Add                      : AdditiveExpression * MultiplicativeExpression -> AdditiveExpression
+                             : MultiplicativeExpression -> AdditiveExpression
+    Mod                      : MultiplicativeExpression * CastExpression -> MultiplicativeExpression
+    Div                      : MultiplicativeExpression * CastExpression -> MultiplicativeExpression
+    Mul                      : MultiplicativeExpression * CastExpression -> MultiplicativeExpression
+                             : CastExpression -> MultiplicativeExpression
+    Cast                     : TypeName * CastExpression -> CastExpression
+                             : UnaryExpression -> CastExpression
+    BinaryNot                : UnaryOperator
+    LogicalNot               : UnaryOperator
+    Neg                      : UnaryOperator
+    Pos                      : UnaryOperator
+    Address                  : UnaryOperator
+    Indirection              : UnaryOperator
+    SizeOfType               : TypeName -> UnaryExpression
+    Sizeof                   : UnaryExpression -> UnaryExpression
+    CastExpr                 : UnaryOperator * CastExpression -> UnaryExpression
+    PreDecr                  : UnaryExpression -> UnaryExpression
+    PreIncr                  : UnaryExpression -> UnaryExpression
+                             : PostfixExpression -> UnaryExpression
+    PostfixExpression        : TypeName * InitializerList -> PostfixExpression
+    PostDecr                 : PostfixExpression -> PostfixExpression
+    PostIncr                 : PostfixExpression -> PostfixExpression
+    PostfixExpression        : PostfixExpression * Identifier -> PostfixExpression
+    Call                     : PostfixExpression * Option(Expression) -> PostfixExpression
+    ArraySubScript           : PostfixExpression * Expression -> PostfixExpression
+                             : PrimaryExpression -> PostfixExpression
+    DirectAbstractDeclarator : Option(DirectAbstractDeclarator) * Option(ParameterTypeList) -> DirectAbstractDeclarator
+    DirectAbstractDeclarator : Option(DirectAbstractDeclarator) -> DirectAbstractDeclarator
+    DirectAbstractDeclarator : Option(DirectAbstractDeclarator) * Option(AssignmentExpression) -> DirectAbstractDeclarator
+    DirectAbstractDeclarator : AbstractDeclarator -> DirectAbstractDeclarator
+    AbstractDeclarator       : Option(PointerSeq) * DirectAbstractDeclarator -> AbstractDeclarator
+                             : PointerSeq -> AbstractDeclarator
+    TypeName                 : SpecifierQualifierList * Option(AbstractDeclarator) -> TypeName
+    ParameterDeclaration     : DeclarationSpecifierSeq * Option(AbstractDeclarator) -> ParameterDeclaration
+    ParameterDeclaration     : DeclarationSpecifierSeq * Declarator -> ParameterDeclaration
+    ParameterList            : List(ParameterDeclaration) -> ParameterList
+    ParameterTypeList        : ParameterList -> ParameterTypeList
+                             : ParameterList -> ParameterTypeList
+    DeclarationSpecifierSeq  : List(DeclarationSpecifier) -> DeclarationSpecifierSeq
+    DeclarationSpecifier     : FunctionSpecifier -> DeclarationSpecifier
+    DeclarationSpecifier     : TypeQualifier -> DeclarationSpecifier
+    DeclarationSpecifier     : TypeSpecifier -> DeclarationSpecifier
+    DeclarationSpecifier     : StorageClassSpecifier -> DeclarationSpecifier
+    Enum                     : EnumSpecifier -> TypeSpecifier
+    StructOrUnion            : StructOrUnionSpecifier -> TypeSpecifier
+    Imaginary                : TypeSpecifier
+    Complex                  : TypeSpecifier
+    Bool                     : TypeSpecifier
+    Unsigned                 : TypeSpecifier
+    Signed                   : TypeSpecifier
+    Double                   : TypeSpecifier
+    Float                    : TypeSpecifier
+    Long                     : TypeSpecifier
+    Int                      : TypeSpecifier
+    Short                    : TypeSpecifier
+    Char                     : TypeSpecifier
+    Void                     : TypeSpecifier
+    StructDeclarator         : Option(Declarator) * ConstantExpression -> StructDeclarator
+                             : Declarator -> StructDeclarator
+    StructDeclaratorList     : List(StructDeclarator) -> StructDeclaratorList
+    StructDeclaration        : SpecifierQualifierList * StructDeclaratorList -> StructDeclaration
+    StructDeclarationList    : List(StructDeclaration) -> StructDeclarationList
+    union                    : StructOrUnion
+    struct                   : StructOrUnion
+    StructOrUnionSpecifier   : StructOrUnion * Identifier -> StructOrUnionSpecifier
+    StructOrUnionSpecifier   : StructOrUnion * Option(Identifier) * StructDeclarationList -> StructOrUnionSpecifier
+    SpecifierQualifierList   : List(SpecifierQualifier) -> SpecifierQualifierList
+                             : TypeQualifier -> SpecifierQualifier
+                             : TypeSpecifier -> SpecifierQualifier
+    TypeQualifierList        : List(TypeQualifier) -> TypeQualifierList
+    volatile                 : TypeQualifier
+    restrict                 : TypeQualifier
+    const                    : TypeQualifier
+    StorageClassSpecifier    : StorageClassSpecifier
+    FunctionSpecifier        : FunctionSpecifier
+    ParenExp                 : Expression -> PrimaryExpression
+    PrimaryExpression        : List(StringLiteral) -> PrimaryExpression
+                             : Literal -> PrimaryExpression
+                             : Identifier -> PrimaryExpression
+                             : EnumerationConstant -> Literal
+                             : FloatingLiteral -> Literal
+                             : CharacterLiteral -> Literal
+                             : IntegerLiteral -> Literal
+                             : STRING-LITERAL -> StringLiteral
+                             : String -> STRING-LITERAL
+                             : INTEGER-LITERAL -> IntegerLiteral
+                             : String -> INTEGER-LITERAL
+                             : HEXADECIMAL-FLOATING-CONSTANT -> FloatingLiteral
+                             : DECIMAL-FLOATING-CONSTANT -> FloatingLiteral
+                             : String -> HEXADECIMAL-FLOATING-CONSTANT
+                             : String -> DECIMAL-FLOATING-CONSTANT
+                             : Identifier -> EnumerationConstant
+    EnumeratorDefinition     : EnumerationConstant * ConstantExpression -> EnumeratorDefinition
+                             : EnumerationConstant -> EnumeratorDefinition
+    EnumeratorList           : List(EnumeratorDefinition) -> EnumeratorList
+    EnumSpecifier            : Identifier -> EnumSpecifier
+    EnumSpecifier            : Option(Identifier) * EnumeratorList -> EnumSpecifier
+                             : CHARACTER-LITERAL -> CharacterLiteral
+                             : String -> CHARACTER-LITERAL
+    InitializerList          : List(InitializerSeq) -> InitializerList
+    InitializerSeq           : Option(Designation) * Initializer -> InitializerSeq
+    Initializer              : InitializerList -> Initializer
+                             : AssignmentExpression -> Initializer
+    Designator               : Identifier -> Designator
+    Designator               : ConstantExpression -> Designator
+    DesignatorList           : List(Designator) -> DesignatorList
+    Designation              : DesignatorList -> Designation
+                             : ID -> Identifier
+                             : String -> ID
+    Expression               : List(AssignmentExpression) -> Expression
+    AssignmentOperator       : AssignmentOperator
+    Assignment               : UnaryExpression * AssignmentOperator * AssignmentExpression -> AssignmentExpression
+                             : ConditionalExpression -> AssignmentExpression
 
-rules // Analysis
-	
-	editor-analyze = analysis-default-editor
-	
-	analysis-single-default-interface = 
-		analysis-single-default(id, id, id|<language>)
-	analysis-multiple-default-interface = 
-		analysis-multiple-default(parse-file <+ !(), id, id, id|<language>, <project-path>)
-	
-	editor-save = analysis-save-default(|<language>)
 
-rules // Editor services
-	
-	// Resolves a reference when the user control-clicks or presses F3 in the editor.
-	editor-resolve:
-		(node, position, ast, path, project-path) -> definition
-		where
-			definition := <analysis-resolve(|<language>, project-path)> node
+signature
+  constructors
+    Some : a -> Option(a)
+    None : Option(a)
 
-	// Returns "hover help" information for a particular node in the editor.
-	// For references, this rule is invoked using the resolved term.
-	editor-hover:
-		(target, position, ast, path, project-path) -> <fail>
 
-	// Completes an identifier when the user presses control-space
-	// (the completion identifier in the AST provides additional context information)
-	editor-complete:
-		(node, position, ast, path, project-path) -> proposals
-		where
-			proposals := <analysis-propose-completions(|<language>, project-path)> ast
-	
-	// Formats the program using a pretty printer		
-  editor-format:
-    (selected, position, ast, path, project-path) -> (filename, result)
-    with
-    	ext      := <get-extension> path;
-      filename := <guarantee-extension(|$[pp.[ext]])> path;
-      result   := <pp-debug> selected
-
-rules // Debugging
-	
-	// Prints the abstract syntax ATerm of a selection.
-	debug-show-aterm:
-		(selected, position, ast, path, project-path) -> (filename, result)
-		with
-			filename := <guarantee-extension(|"aterm")> path;
-			result	 := selected
-			
-	// Prints the analyzed annotated abstract syntax ATerm of a selection.
-	debug-show-analyzed:
-		(selected, position, ast, path, project-path) -> (filename, result)
-		with
-			filename := <guarantee-extension(|"analyzed.aterm")> path;
-			result	 := ast
-			
-	debug-index-project =
-		analysis-debug-index-project(|<language>)
-	debug-index-partition =
-		analysis-debug-index-partition(|<language>)
-
-	debug-task-project =
-		analysis-debug-task-project(|<language>)
-	debug-task-partition =
-		analysis-debug-task-partition(|<language>)
-	debug-task-selection =
-		analysis-debug-task-selection(|<language>)
-		
-	debug-project =
-		analysis-debug-project(|<language>)
-	debug-partition =
-		analysis-debug-partition(|<language>)
-		
-	debug-reanalyze = 
-		analysis-debug-reanalyze(|<language>)
-
+signature
+  constructors
+    Cons : a * List(a) -> List(a)
+    Nil  : List(a)
+    Conc : List(a) * List(a) -> List(a)

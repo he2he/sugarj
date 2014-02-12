@@ -2,8 +2,8 @@ package org.sugarj.c;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.sugarj.CLibFactory;
-import org.sugarj.LanguageLibRegistry;
+import org.sugarj.CLanguage;
+import org.sugarj.BaseLanguageRegistry;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -11,7 +11,7 @@ import org.sugarj.LanguageLibRegistry;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.sugarj.haskell"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.sugarj.c"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -20,7 +20,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-	  LanguageLibRegistry.getInstance().registerLanguageLib(CLibFactory.getInstance());
+	  BaseLanguageRegistry.getInstance().registerBaseLanguage(CLanguage.getInstance());
 	}
 
 	/*

@@ -1,4 +1,4 @@
-module org/sugarj/haskell/initEditor
+module org/sugarj/c/initEditor
 
 colorer Default, token-based highlighting
                                   
@@ -45,10 +45,10 @@ folding
   SugarDefElem
   _.Valdef
   _.GdValdef
-  HaskellExp.Do
-  HaskellExp.Case
-//  HaskellAlt
-  HaskellWhere
+  CExp.Do
+  CExp.Case
+//  CAlt
+  CWhere
   
 
 outliner

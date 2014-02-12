@@ -1,2 +1,3 @@
 module org/sugarj/c/initTrans
-imports org/sugarj/languages/SugarC
+imports //org/sugarj/stdlib/StdTrans
+        org/sugarj/languages/SugarC

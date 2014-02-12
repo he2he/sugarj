@@ -1,0 +1,8 @@
+module org/sugarj/languages/SugarC
+imports //org/sugarj/languages/Sugar
+
+signature constructors
+  CompilationUnit : CModuleDec * List(CImportdecl) * List(SugarCTopdecl) -> SugarCompilationUnit
+  ModuleDec : CModid * Option(CExports) -> CModuleDec
+  CBody : COffsideTopdeclList -> SugarCBody
+  ExtensionBody : List(SugarDefElem) -> SugarCBody

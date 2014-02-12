@@ -1,14 +1,18 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Sugarc
-Bundle-SymbolicName: sugarc
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: sugarc.Activator
+Bundle-Name: org.sugarj.language.c
+Bundle-SymbolicName: org.sugarj.language.c;singleton:=true
+Bundle-Version: 1.2.0.qualifier
+Bundle-Activator: org.sugarj.c.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.sugarj.common,
- org.sugarj.languagelib,
  org.spoofax.terms,
- org.strategoxt.strj
+ org.strategoxt.strj,
+ org.sugarj.baselang
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.sugarj
+Eclipse-RegisterBuddy: org.sugarj.baselang
+Eclipse-BundleShape: dir
+Import-Package: org.sugarj
