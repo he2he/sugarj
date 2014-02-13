@@ -9,3 +9,12 @@ imports org/sugarj/languages/C
 %%    COffsideImportdecl          -> ToplevelDeclaration
 %%    COffsideTopdeclList         -> ToplevelDeclaration {cons("CBody")}
 %%    ExtensionElem+                    -> ToplevelDeclaration {cons("ExtensionBody")}
+
+
+
+exports
+ context-free syntax
+   TranslationUnit                  -> ToplevelDeclaration
+%%   OffsideImportdecl          -> ToplevelDeclaration
+%%   OffsideTopdeclList         -> ToplevelDeclaration {cons("CBody")}
+   ExtensionElem+                    -> ToplevelDeclaration {cons("ExtensionBody")}

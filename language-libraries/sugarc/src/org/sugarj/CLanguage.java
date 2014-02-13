@@ -10,7 +10,7 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.sugarj.common.path.Path;
 
 /**
- * @author Sebastian Erdweg <seba at informatik uni-marburg de>
+ * @author Matthias Becker
  */
 
 public class CLanguage extends AbstractBaseLanguage {
@@ -33,7 +33,7 @@ public class CLanguage extends AbstractBaseLanguage {
 
   @Override
   public String getVersion() {
-    return "c-0.1a";
+    return "c-0.1";
   }
   
   @Override
@@ -103,22 +103,25 @@ public class CLanguage extends AbstractBaseLanguage {
 
   @Override
   public boolean isImportDecl(IStrategoTerm decl) {
-    return isApplication(decl, "Import");   
+    return isApplication(decl, "Import");   // TODO: wie soll es heiﬂen?
   }
 
   @Override
   public boolean isBaseDecl(IStrategoTerm decl) {
-    return isApplication(decl, "CBody") || isNamespaceDec(decl);
+    return isApplication(decl, "TranslationUnit");
   }
 
+  // TODO: Es gibt keine 
   public boolean isNamespaceDec(IStrategoTerm decl) {
-    return isApplication(decl, "ModuleDec");
+    return false; //return isApplication(decl, "ModuleDec");
   }
 
+  // TODO: ???
   @Override
   public boolean isPlainDecl(IStrategoTerm decl) {
-    if (isApplication(decl, "PlainDec"))
-      return true;
+//    if (isApplication(decl, "PlainDec"))
+//      return true;
+	  System.out.println("&&&&&&&&&&&&&&&&&& is plain decl " + decl);
     return false;
   }
 

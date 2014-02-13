@@ -39,16 +39,16 @@ language
   block comment                          : "/*" * "*/"
 
 folding
-  _.CompilationUnit
-  ToplevelDeclaration
-  EditorServiceSection
-  SugarDefElem
-  _.Valdef
-  _.GdValdef
-  CExp.Do
-  CExp.Case
-//  CAlt
-  CWhere
+//  _.CompilationUnit
+//  ToplevelDeclaration
+//  EditorServiceSection
+//  SugarDefElem
+//  _.Valdef
+//  _.GdValdef
+//  CExp.Do
+//  CExp.Case
+////  CAlt
+//  CWhere
   
 
 outliner
